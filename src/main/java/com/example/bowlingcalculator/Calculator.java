@@ -14,8 +14,12 @@ public class Calculator {
     private static final Logger log = LoggerFactory.getLogger(Calculator.class);
 
     /**
+     * This method makes a frame for each point pair.
+     * If there are less than 10 frames, the total score is calculated without bonus point for strike and spare
+     * If there are 10 frames (10 points pair -> finished game), the frames are recalculated with
+     * bonus point for strike and spare.
      * @param points
-     * @return
+     * @return TotalScore
      */
     public TotalScore calculateBowlingTotalScore(Points points) {
         TotalScore totalScore = new TotalScore();
@@ -44,13 +48,14 @@ public class Calculator {
         } else {
             // we have received a full set of frames. we have to calculate with bonus for strike and spare.
             totalScore.setToalScore(recalculateFrames(points));
-            ;
         }
 
         return totalScore;
     }
 
     /**
+     * This method recalculates all the frames where we take into account that some of the frames
+     * have a strike or a spare.
      * @param points
      * @return List<Integer>
      */
@@ -86,7 +91,8 @@ public class Calculator {
                 totalScoreList.add(totalScore);
             }
             if (frameList.get(index).isSpare()) {
-                //we have to read the values of the next object in framelist in order to calculate.
+                //we have to read the values of the next object in the frame list in order to calculate.
+                //In the case of a spare the pins of the first roll have to be added as bonus
                 int nextIndex;
                 if (index == 9) {
                     nextIndex = index;
@@ -99,7 +105,8 @@ public class Calculator {
                 totalScoreList.add(totalScore);
             }
             if (frameList.get(index).isStrike()) {
-                //we have to read the values of the next object in framelist in order to calculate.
+                //we have to read the values of the next object in the frame list in order to calculate.
+                //In the case of a strike the pins for the first roll and second roll have to be added as bonus
                 int nextIndex;
                 if (index == 9) {
                     nextIndex = index;
