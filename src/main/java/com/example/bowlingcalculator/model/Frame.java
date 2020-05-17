@@ -4,6 +4,7 @@ public class Frame {
 
     private int pinsKnockedDownRollOne;
     private int pinsKnockedDownRollTwo;
+    private int extraFinalRoll;
     private int totalScore;
     private boolean strike;
     private boolean spare;
@@ -50,5 +51,13 @@ public class Frame {
 
     public void setSpare(boolean spare) {
         this.spare = spare;
+    }
+
+    public int getExtraFinalRoll() {
+        return extraFinalRoll;
+    }
+
+    public void setExtraFinalRoll(int extraFinalRoll) {
+        this.extraFinalRoll = extraFinalRoll;
     }
 }

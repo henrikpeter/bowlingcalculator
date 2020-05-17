@@ -49,8 +49,9 @@ public class TestHelper {
         integerList9.add(1,2);
 
         List<Integer> integerList10 = new ArrayList<>();
-        integerList10.add(0,2);
+        integerList10.add(0,5);
         integerList10.add(1,5);
+        integerList10.add(2,7);
 
         listArrayList.add(0,integerList1);
         listArrayList.add(1,integerList2);
@@ -70,6 +71,10 @@ public class TestHelper {
             Frame frame = new Frame();
             frame.setPinsKnockedDownRollOne(integerList.get(0));
             frame.setPinsKnockedDownRollTwo(integerList.get(1));
+            if (integerList.size() == 3) {
+                //we have the 10'th frame with extra roll
+                frame.setExtraFinalRoll(integerList.get(2));
+            }
             frameList.add(frame);
         }
 

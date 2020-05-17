@@ -29,7 +29,7 @@ public class CalculatorTest {
         assertEquals(Integer.valueOf(98), calculatorIntegerList.get(6));
         assertEquals(Integer.valueOf(111), calculatorIntegerList.get(7));
         assertEquals(Integer.valueOf(116), calculatorIntegerList.get(8));
-        assertEquals(Integer.valueOf(123), calculatorIntegerList.get(9));
+        assertEquals(Integer.valueOf(133), calculatorIntegerList.get(9));
     }
 
 

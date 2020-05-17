@@ -31,6 +31,10 @@ public class Calculator {
             Frame frame = new Frame();
             frame.setPinsKnockedDownRollOne(integerList.get(0));
             frame.setPinsKnockedDownRollTwo(integerList.get(1));
+            if (integerList.size() == 3) {
+                //we have the 10'th frame with extra roll
+                frame.setExtraFinalRoll(integerList.get(2));
+            }
             frame.setTotalScore(frame.getPinsKnockedDownRollOne() + frame.getPinsKnockedDownRollTwo());
             frameList.add(frame);
         }
@@ -62,19 +66,19 @@ public class Calculator {
      */
     List<Integer> recalculateFrames(List<Frame> frameList) {
         for (Frame frame : frameList) {
-             if(frame.getPinsKnockedDownRollOne() == 10 || frame.getPinsKnockedDownRollTwo() == 10){
-                 //we have a strike
-                 frame.setStrike(true);
-                 //we reset the score to 0 as we have to recalculate it.
-                 frame.setTotalScore(0);
-             }else{
-                 //check to see if we have a spare
-                 if(frame.getPinsKnockedDownRollOne() + frame.getPinsKnockedDownRollTwo() == 10){
-                     frame.setSpare(true);
-                     //we reset the score to 0 as we have to recalculate it.
-                     frame.setTotalScore(0);
-                 }
-             }
+            if (frame.getPinsKnockedDownRollOne() == 10 || frame.getPinsKnockedDownRollTwo() == 10) {
+                //we have a strike
+                frame.setStrike(true);
+                //we reset the score to 0 as we have to recalculate it.
+                frame.setTotalScore(0);
+            } else {
+                //check to see if we have a spare
+                if (frame.getPinsKnockedDownRollOne() + frame.getPinsKnockedDownRollTwo() == 10) {
+                    frame.setSpare(true);
+                    //we reset the score to 0 as we have to recalculate it.
+                    frame.setTotalScore(0);
+                }
+            }
         }
 
         //now we calculate to total score for all frames with bonus
@@ -100,15 +104,29 @@ public class Calculator {
                 //In the case of a spare the pins of the first roll have to be added as bonus
                 int bonus = frameList.get(nextIndex).getPinsKnockedDownRollOne();
                 int sumOfRollOneAndTwo = frameList.get(index).getPinsKnockedDownRollOne() + frameList.get(index).getPinsKnockedDownRollTwo();
-                totalScore = totalScore + sumOfRollOneAndTwo + bonus;
+                int extraRoll = frameList.get(index).getExtraFinalRoll();
+                //if this frame is the 10 and final frame we have to take the pins of the 3 roll
+                if (extraRoll > 0) {
+                    //this is the final frame. we must add the pins of the 3 roll in total score.
+                    totalScore = totalScore + sumOfRollOneAndTwo + extraRoll;
+                } else {
+                    totalScore = totalScore + sumOfRollOneAndTwo + bonus;
+                }
                 totalScoreList.add(totalScore);
             }
             if (frameList.get(index).isStrike()) {
                 //we have to read the values of the next object in the frame list in order to calculate.
                 //In the case of a strike the pins for the first roll and second roll have to be added as bonus
-                int bonus = frameList.get(nextIndex).getPinsKnockedDownRollOne() + frameList.get(index + 1).getPinsKnockedDownRollTwo();
+                int bonus = frameList.get(nextIndex).getPinsKnockedDownRollOne() + frameList.get(nextIndex).getPinsKnockedDownRollTwo();
                 int sumOfRollOneAndTwo = frameList.get(index).getPinsKnockedDownRollOne() + frameList.get(index).getPinsKnockedDownRollTwo();
-                totalScore = totalScore + sumOfRollOneAndTwo + bonus;
+                int extraRoll = frameList.get(index).getExtraFinalRoll();
+                //if this frame is the 10 and final frame we have to take the pins of the extra roll
+                if (extraRoll > 0) {
+                    //this is the final frame. we must add the pins of the extra roll in total score.
+                    totalScore = totalScore + sumOfRollOneAndTwo + extraRoll;
+                } else {
+                    totalScore = totalScore + sumOfRollOneAndTwo + bonus;
+                }
                 totalScoreList.add(totalScore);
             }
             index++;
