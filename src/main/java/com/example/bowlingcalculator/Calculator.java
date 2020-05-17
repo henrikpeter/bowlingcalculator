@@ -18,6 +18,7 @@ public class Calculator {
      * If there are less than 10 frames, the total score is calculated without bonus point for strike and spare
      * If there are 10 frames (10 points pair -> finished game), the frames are recalculated with
      * bonus point for strike and spare.
+     *
      * @param points
      * @return TotalScore
      */
@@ -34,7 +35,6 @@ public class Calculator {
             frameList.add(frame);
         }
 
-
         if (frameList.size() < 10) {
             // we have not received a full set of frames. we do not calculate with bonus for strike and spare
             List<Integer> toalScoreList = new ArrayList<>();
@@ -47,7 +47,7 @@ public class Calculator {
             totalScore.setToalScore(toalScoreList);
         } else {
             // we have received a full set of frames. we have to calculate with bonus for strike and spare.
-            totalScore.setToalScore(recalculateFrames(points));
+            totalScore.setToalScore(recalculateFrames(frameList));
         }
 
         return totalScore;
@@ -56,27 +56,25 @@ public class Calculator {
     /**
      * This method recalculates all the frames where we take into account that some of the frames
      * have a strike or a spare.
-     * @param points
+     *
+     * @param frameList
      * @return List<Integer>
      */
-     List<Integer> recalculateFrames(Points points) {
-        List<Frame> frameList = new ArrayList<>();
-        for (List<Integer> integerList : points.getPoints()) {
-            Integer rollOne = integerList.get(0);
-            Integer rollTwo = integerList.get(1);
-            Frame frame = new Frame();
-            frame.setPinsKnockedDownRollOne(rollOne);
-            frame.setPinsKnockedDownRollTwo(rollTwo);
-            if (rollOne == 10 || rollTwo == 10) {
-                //we have a strike
-                frame.setStrike(true);
-            } else {
-                //check to see if we have a spare
-                if (rollOne + rollTwo == 10) {
-                    frame.setSpare(true);
-                }
-            }
-            frameList.add(frame);
+    List<Integer> recalculateFrames(List<Frame> frameList) {
+        for (Frame frame : frameList) {
+             if(frame.getPinsKnockedDownRollOne() == 10 || frame.getPinsKnockedDownRollTwo() == 10){
+                 //we have a strike
+                 frame.setStrike(true);
+                 //we reset the score to 0 as we have to recalculate it.
+                 frame.setTotalScore(0);
+             }else{
+                 //check to see if we have a spare
+                 if(frame.getPinsKnockedDownRollOne() + frame.getPinsKnockedDownRollTwo() == 10){
+                     frame.setSpare(true);
+                     //we reset the score to 0 as we have to recalculate it.
+                     frame.setTotalScore(0);
+                 }
+             }
         }
 
         //now we calculate to total score for all frames with bonus
@@ -84,38 +82,33 @@ public class Calculator {
         int totalScore = 0;
         int index = 0;
         while (index < 10) {
+            int nextIndex;
+            if (index == 9) {
+                nextIndex = index;
+            } else {
+                nextIndex = index + 1;
+            }
+
             if (frameList.get(index).isStrike() == false && frameList.get(index).isSpare() == false) {
                 //we can already calculate the score
-                int sumOfrollOneAndTwo = frameList.get(index).getPinsKnockedDownRollOne() + frameList.get(index).getPinsKnockedDownRollTwo();
-                totalScore = totalScore + sumOfrollOneAndTwo;
+                int sumOfRollOneAndTwo = frameList.get(index).getPinsKnockedDownRollOne() + frameList.get(index).getPinsKnockedDownRollTwo();
+                totalScore = totalScore + sumOfRollOneAndTwo;
                 totalScoreList.add(totalScore);
             }
             if (frameList.get(index).isSpare()) {
                 //we have to read the values of the next object in the frame list in order to calculate.
                 //In the case of a spare the pins of the first roll have to be added as bonus
-                int nextIndex;
-                if (index == 9) {
-                    nextIndex = index;
-                } else {
-                    nextIndex = index + 1;
-                }
                 int bonus = frameList.get(nextIndex).getPinsKnockedDownRollOne();
-                int sumOfrollOneAndTwo = frameList.get(index).getPinsKnockedDownRollOne() + frameList.get(index).getPinsKnockedDownRollTwo();
-                totalScore = totalScore + sumOfrollOneAndTwo + bonus;
+                int sumOfRollOneAndTwo = frameList.get(index).getPinsKnockedDownRollOne() + frameList.get(index).getPinsKnockedDownRollTwo();
+                totalScore = totalScore + sumOfRollOneAndTwo + bonus;
                 totalScoreList.add(totalScore);
             }
             if (frameList.get(index).isStrike()) {
                 //we have to read the values of the next object in the frame list in order to calculate.
                 //In the case of a strike the pins for the first roll and second roll have to be added as bonus
-                int nextIndex;
-                if (index == 9) {
-                    nextIndex = index;
-                } else {
-                    nextIndex = index + 1;
-                }
                 int bonus = frameList.get(nextIndex).getPinsKnockedDownRollOne() + frameList.get(index + 1).getPinsKnockedDownRollTwo();
-                int sumOfrollOneAndTwo = frameList.get(index).getPinsKnockedDownRollOne() + frameList.get(index).getPinsKnockedDownRollTwo();
-                totalScore = totalScore + sumOfrollOneAndTwo + bonus;
+                int sumOfRollOneAndTwo = frameList.get(index).getPinsKnockedDownRollOne() + frameList.get(index).getPinsKnockedDownRollTwo();
+                totalScore = totalScore + sumOfRollOneAndTwo + bonus;
                 totalScoreList.add(totalScore);
             }
             index++;

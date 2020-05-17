@@ -1,5 +1,6 @@
 package com.example.bowlingcalculator;
 
+import com.example.bowlingcalculator.model.Frame;
 import com.example.bowlingcalculator.model.Points;
 import com.example.bowlingcalculator.model.TotalScore;
 import org.junit.Test;
@@ -15,9 +16,9 @@ public class CalculatorTest {
     @Test
     public void testRecalculateFrames() {
         //setup
-        Points points = TestHelper.getPointsAllFrames();
+        List<Frame> frameList = TestHelper.getAllFrames();
         //run test
-        List<Integer> calculatorIntegerList = calculator.recalculateFrames(points);
+        List<Integer> calculatorIntegerList = calculator.recalculateFrames(frameList);
         //check code
         assertEquals(Integer.valueOf(20), calculatorIntegerList.get(0));
         assertEquals(Integer.valueOf(40), calculatorIntegerList.get(1));
