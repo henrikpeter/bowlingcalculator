@@ -73,7 +73,8 @@ public class TestHelper {
             frame.setPinsKnockedDownRollTwo(integerList.get(1));
             if (integerList.size() == 3) {
                 //we have the 10'th frame with extra roll
-                frame.setExtraFinalRoll(integerList.get(2));
+                frame.setPinsKnockedDownExtraRoll(integerList.get(2));
+                frame.setExtraRoll(true);
             }
             frameList.add(frame);
         }

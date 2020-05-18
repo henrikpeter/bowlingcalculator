@@ -33,7 +33,8 @@ public class Calculator {
             frame.setPinsKnockedDownRollTwo(integerList.get(1));
             if (integerList.size() == 3) {
                 //we have the 10'th frame with extra roll
-                frame.setExtraFinalRoll(integerList.get(2));
+                frame.setPinsKnockedDownExtraRoll(integerList.get(2));
+                frame.setExtraRoll(true);
             }
             frame.setTotalScore(frame.getPinsKnockedDownRollOne() + frame.getPinsKnockedDownRollTwo());
             frameList.add(frame);
@@ -104,9 +105,9 @@ public class Calculator {
                 //In the case of a spare the pins of the first roll have to be added as bonus
                 int bonus = frameList.get(nextIndex).getPinsKnockedDownRollOne();
                 int sumOfRollOneAndTwo = frameList.get(index).getPinsKnockedDownRollOne() + frameList.get(index).getPinsKnockedDownRollTwo();
-                int extraRoll = frameList.get(index).getExtraFinalRoll();
+                int extraRoll = frameList.get(index).getPinsKnockedDownExtraRoll();
                 //if this frame is the 10 and final frame we have to take the pins of the 3 roll
-                if (extraRoll > 0) {
+                if (frameList.get(index).isExtraRoll()) {
                     //this is the final frame. we must add the pins of the 3 roll in total score.
                     totalScore = totalScore + sumOfRollOneAndTwo + extraRoll;
                 } else {
@@ -119,9 +120,9 @@ public class Calculator {
                 //In the case of a strike the pins for the first roll and second roll have to be added as bonus
                 int bonus = frameList.get(nextIndex).getPinsKnockedDownRollOne() + frameList.get(nextIndex).getPinsKnockedDownRollTwo();
                 int sumOfRollOneAndTwo = frameList.get(index).getPinsKnockedDownRollOne() + frameList.get(index).getPinsKnockedDownRollTwo();
-                int extraRoll = frameList.get(index).getExtraFinalRoll();
+                int extraRoll = frameList.get(index).getPinsKnockedDownExtraRoll();
                 //if this frame is the 10 and final frame we have to take the pins of the extra roll
-                if (extraRoll > 0) {
+                if (frameList.get(index).isExtraRoll()) {
                     //this is the final frame. we must add the pins of the extra roll in total score.
                     totalScore = totalScore + sumOfRollOneAndTwo + extraRoll;
                 } else {

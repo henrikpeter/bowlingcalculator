@@ -4,10 +4,11 @@ public class Frame {
 
     private int pinsKnockedDownRollOne;
     private int pinsKnockedDownRollTwo;
-    private int extraFinalRoll;
+    private int pinsKnockedDownExtraRoll;
     private int totalScore;
     private boolean strike;
     private boolean spare;
+    private boolean extraRoll;
 
     public Frame() {
         //default constructor
@@ -53,11 +54,19 @@ public class Frame {
         this.spare = spare;
     }
 
-    public int getExtraFinalRoll() {
-        return extraFinalRoll;
+    public int getPinsKnockedDownExtraRoll() {
+        return pinsKnockedDownExtraRoll;
     }
 
-    public void setExtraFinalRoll(int extraFinalRoll) {
-        this.extraFinalRoll = extraFinalRoll;
+    public void setPinsKnockedDownExtraRoll(int pinsKnockedDownExtraRoll) {
+        this.pinsKnockedDownExtraRoll = pinsKnockedDownExtraRoll;
+    }
+
+    public boolean isExtraRoll() {
+        return extraRoll;
+    }
+
+    public void setExtraRoll(boolean extraRoll) {
+        this.extraRoll = extraRoll;
     }
 }
